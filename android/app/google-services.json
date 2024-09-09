@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489550094744",
+    "project_id": "loopcart-ae408",
+    "storage_bucket": "loopcart-ae408.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489550094744:android:287743d7249a70ba158bed",
+        "android_client_info": {
+          "package_name": "com.example.loopCart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxKgVvAwWrB4ZOoZfQpLi7gJcWkUDmKfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
