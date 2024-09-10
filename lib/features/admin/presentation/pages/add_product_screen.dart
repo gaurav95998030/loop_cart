@@ -3,6 +3,14 @@
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loop_cart/features/admin/modals/product_modal.dart';
+import 'package:loop_cart/features/admin/presentation/widgets/add_new_prod/upload_featured_images.dart';
+import 'package:loop_cart/features/admin/presentation/widgets/add_new_prod/upload_main_image.dart';
+import 'package:loop_cart/features/admin/view_modal/main_image_provider.dart';
+import 'package:loop_cart/features/admin/view_modal/product_provider.dart';
+import 'package:loop_cart/utils/show_snackbar.dart';
+import 'package:loop_cart/utils/vertical_space.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -12,7 +20,10 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-
+ ProductCategory _selectedCategory = ProductCategory.Books;
+ String enteredTitle = '';
+ String enteredDiscription = '';
+ double amount = 0;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -22,55 +33,143 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 250,
-              padding: const EdgeInsets.all(16.0),
-              margin: const EdgeInsets.all(16.0), // Add padding for better spacing
-              decoration: BoxDecoration(
-                color: Colors.white, // Background color
-                borderRadius: BorderRadius.circular(12.0), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8.0,
-                    offset: const Offset(0, 4), // Shadow offset
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min, // Minimize size to fit content
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.image, size: 40.0), // Larger icon for better visibility
-                      color: Colors.blueAccent, // Icon color
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+               const UploadMainImage(),
+               const UploadFeaturedImages(),
+          Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                const VerticalSpace(height: 20),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Product Title",
+                    prefixIcon: const Icon(Icons.title),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    SizedBox(height: 8.0), // Space between icon and text
-                    Text(
-                      "Upload Image",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a product title';
+                    }
+                    return null;
+                  },
+                  onSaved: (vale){
+                    enteredTitle=vale!;
+                  },
+                ),
+                const VerticalSpace(height: 16),
+                TextFormField(
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: "Description",
+                    alignLabelWithHint: true,
+                    prefixIcon: const Icon(Icons.description),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a description';
+                    }
+                    return null;
+                  },
+                  onSaved: (des){
+                    enteredDiscription = des!;
+                  },
+                ),
+                const VerticalSpace(height: 16),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Amount",
+                    prefixIcon: const Icon(Icons.attach_money),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an amount';
+                    }
+                    return null;
+                  },
+                  onSaved: (am){
+                    amount = double.tryParse(am!)!;
+                  },
+                ),
+                const VerticalSpace(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Category: ", style: TextStyle(fontSize: 16)),
+
+                    Expanded(
+                      child: DropdownButtonFormField<ProductCategory>(
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        value: _selectedCategory,
+                        items: ProductCategory.values.map((category) {
+                          return DropdownMenuItem<ProductCategory>(
+                            value: category,
+                            child: Text(category.name),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedCategory = newValue!;
+                          });
+                        },
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-             Form(
-              key: _formKey,
-                child: const Column(
-                  children: [
+                const VerticalSpace(height: 24),
+                Center(
+                  child: Consumer(
+                    builder: (context,ref,child) {
+                      return ElevatedButton(
+                        onPressed: () {
 
-                  ],
-                )
-            )
-          ],
+                          if(ref.read(mainImageProvider).pickedImage==null){
+                            ShowSnackbarMsg.showSnack("Please Upload Product Image first");
+                            return ;
+                          }
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            ref.read(productsProvider.notifier).addProduct(title: enteredTitle, description: enteredDiscription, price: amount, category: _selectedCategory);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          "Add Product",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      );
+                    }
+                  ),
+                ),
+              ],
+            ),
+          )
+            ],
+          ),
         ),
       ),
     );
