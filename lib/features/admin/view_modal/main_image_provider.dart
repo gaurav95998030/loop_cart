@@ -7,11 +7,12 @@ import 'package:loop_cart/features/admin/services/storage_services/storage_servi
 
 class MainImageState{
  XFile? pickedImage;
+ String url;
  bool isLoading;
- MainImageState({required this.pickedImage,required this.isLoading});
+ MainImageState({required this.url,required this.pickedImage,required this.isLoading});
 }
 class MainImageNotifier extends StateNotifier<MainImageState> {
-  MainImageNotifier() : super(MainImageState(pickedImage: null, isLoading: false));
+  MainImageNotifier() : super(MainImageState(pickedImage: null, isLoading: false, url: ''));
 
 
 
@@ -21,16 +22,16 @@ class MainImageNotifier extends StateNotifier<MainImageState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    state = MainImageState(pickedImage: state.pickedImage, isLoading: true);
+    state = MainImageState(pickedImage: state.pickedImage, isLoading: true, url: state.url);
     if(image != null){
       String? res = await StorageServices.uploadImage(File(image.path));
 
       if(res!=null){
-        state = MainImageState(pickedImage: image, isLoading: false);
+        state = MainImageState(pickedImage: image, isLoading: false, url: res);
         return true;
       }
 
-      state = MainImageState(pickedImage: state.pickedImage, isLoading: false);
+      state = MainImageState(pickedImage: state.pickedImage, isLoading: false, url: state.url);
       return false;
 
     }

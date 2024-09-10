@@ -11,13 +11,14 @@ import 'package:loop_cart/features/admin/services/storage_services/storage_servi
 
 class FeaturedImagesState{
   List<XFile?> images;
+  List<String> url;
   bool isLoading;
 
-  FeaturedImagesState({required this.isLoading,required this.images});
+  FeaturedImagesState({required this.url,required this.isLoading,required this.images});
 }
 
 class FeaturesImagesNotifier extends StateNotifier<FeaturedImagesState> {
-  FeaturesImagesNotifier() : super(FeaturedImagesState(isLoading: false, images: []));
+  FeaturesImagesNotifier() : super(FeaturedImagesState(isLoading: false, images: [], url: []));
 
 
 
@@ -27,7 +28,7 @@ class FeaturesImagesNotifier extends StateNotifier<FeaturedImagesState> {
     List<String> imagesUrl=[];
     final ImagePicker picker = ImagePicker();
     final List<XFile> images = await picker.pickMultiImage();
-    state = FeaturedImagesState(isLoading: true, images: images);
+    state = FeaturedImagesState(isLoading: true, images: images, url: state.url);
     for(var image in images){
 
       String? url = await StorageServices.uploadImage(File(image.path));
@@ -37,7 +38,7 @@ class FeaturesImagesNotifier extends StateNotifier<FeaturedImagesState> {
       }
 
     }
-    state = FeaturedImagesState(isLoading: false, images: images);
+    state = FeaturedImagesState(isLoading: false, images: images, url: imagesUrl);
     return imagesUrl;
   }
 }

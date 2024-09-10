@@ -1,14 +1,16 @@
 
 
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loop_cart/features/admin/modals/product_modal.dart';
 import 'package:loop_cart/features/admin/presentation/widgets/add_new_prod/upload_featured_images.dart';
 import 'package:loop_cart/features/admin/presentation/widgets/add_new_prod/upload_main_image.dart';
+import 'package:loop_cart/features/admin/view_modal/features_images_provider.dart';
+import 'package:loop_cart/features/admin/view_modal/loader/add_product_loader.dart';
 import 'package:loop_cart/features/admin/view_modal/main_image_provider.dart';
 import 'package:loop_cart/features/admin/view_modal/product_provider.dart';
+import 'package:loop_cart/features/admin/view_modal/tab_index_provider.dart';
 import 'package:loop_cart/utils/show_snackbar.dart';
 import 'package:loop_cart/utils/vertical_space.dart';
 
@@ -140,7 +142,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   child: Consumer(
                     builder: (context,ref,child) {
                       return ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
 
                           if(ref.read(mainImageProvider).pickedImage==null){
                             ShowSnackbarMsg.showSnack("Please Upload Product Image first");
@@ -148,7 +150,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           }
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            ref.read(productsProvider.notifier).addProduct(title: enteredTitle, description: enteredDiscription, price: amount, category: _selectedCategory);
+                           bool res = await ref.read(productsProvider.notifier).addProduct(title: enteredTitle, description: enteredDiscription, price: amount, category: _selectedCategory);
+
+                           if(res){
+                             _formKey.currentState!.reset();
+                             ShowSnackbarMsg.showSnack("Added Successfully");
+                             ref.read(tabIndexProvider.notifier).update((cb)=>0);
+                             ref.invalidate(featuresImagesProvider);
+                             ref.invalidate(mainImageProvider);
+                           }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -157,9 +167,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          "Add Product",
-                          style: TextStyle(fontSize: 18),
+                        child: Consumer(
+                          builder: (context,ref,child) {
+                            bool isLoading = ref.watch(addProductLoaderProvider);
+                            return  Text(
+                              isLoading?"Adding":"Add Product",
+                              style: const TextStyle(fontSize: 18),
+                            );
+                          }
                         ),
                       );
                     }

@@ -21,7 +21,7 @@ class StorageServices {
 
 
       String url = await ref.getDownloadURL();
-
+      print(url);
       return url;
     }catch(err){
       return null;

@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loop_cart/features/admin/presentation/pages/add_product_screen.dart';
 import 'package:loop_cart/features/admin/presentation/widgets/admin_home/show_posts.dart';
+import 'package:loop_cart/features/admin/view_modal/tab_index_provider.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -13,7 +15,7 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
 
 
-  int currentIndex = 0;
+
   List<Widget> contents = [
     ShowPosts(),
     Center(
@@ -62,29 +64,38 @@ class _AdminHomePageState extends State<AdminHomePage> {
           ],
         ),
       ),
-      body:contents[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (vale){
-          setState(() {
-            currentIndex=vale;
-          });
+      body:Consumer(
+        builder: (context,ref,child){
+          int currentIndex = ref.watch(tabIndexProvider);
+          return contents[currentIndex];
         },
-        items:  const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: "Analytics",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_border_sharp),
-            label: "Orders",
-          ),
-        ],
+      ),
+      bottomNavigationBar: Consumer(
+        builder: (context,ref,child) {
+          int currentIndex = ref.watch(tabIndexProvider);
+          return BottomNavigationBar(
 
+            currentIndex: currentIndex,
+            onTap: (vale){
+              ref.read(tabIndexProvider.notifier).update((cb)=>vale);
+            },
+            items:  const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.analytics),
+                label: "Analytics",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bookmark_border_sharp),
+                label: "Orders",
+              ),
+            ],
+
+          );
+        }
       ),
         floatingActionButton:FloatingActionButton(
           onPressed: () {
