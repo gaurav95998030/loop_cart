@@ -22,7 +22,7 @@ class FeaturesImagesNotifier extends StateNotifier<FeaturedImagesState> {
 
 
 
-  Future<List<String>> uploadImage() async {
+  Future<List<String>> uploadImage(String title) async {
 
 
     List<String> imagesUrl=[];
@@ -31,7 +31,7 @@ class FeaturesImagesNotifier extends StateNotifier<FeaturedImagesState> {
     state = FeaturedImagesState(isLoading: true, images: images, url: state.url);
     for(var image in images){
 
-      String? url = await StorageServices.uploadImage(File(image.path));
+      String? url = await StorageServices.uploadImage(File(image.path),title);
 
       if(url!=null){
         imagesUrl.add(url);

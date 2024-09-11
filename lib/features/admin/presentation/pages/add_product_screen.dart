@@ -1,6 +1,7 @@
 
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loop_cart/features/admin/modals/product_modal.dart';
@@ -23,10 +24,18 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
  ProductCategory _selectedCategory = ProductCategory.Books;
+ TextEditingController titleController = TextEditingController();
  String enteredTitle = '';
  String enteredDiscription = '';
  double amount = 0;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    titleController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +48,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-               const UploadMainImage(),
-               const UploadFeaturedImages(),
+
           Form(
             key: _formKey,
             child: Column(
@@ -49,6 +57,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
                 const VerticalSpace(height: 20),
                 TextFormField(
+                  controller: titleController,
                   decoration: InputDecoration(
                     labelText: "Product Title",
                     prefixIcon: const Icon(Icons.title),
@@ -138,8 +147,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ],
                 ),
                 const VerticalSpace(height: 24),
-                Center(
-                  child: Consumer(
+
+              ],
+            ),
+          ),
+              UploadMainImage(title:titleController.text),
+              UploadFeaturedImages(title:titleController.text),
+              Center(
+                child: Consumer(
                     builder: (context,ref,child) {
                       return ElevatedButton(
                         onPressed: () async {
@@ -150,15 +165,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           }
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                           bool res = await ref.read(productsProvider.notifier).addProduct(title: enteredTitle, description: enteredDiscription, price: amount, category: _selectedCategory);
+                            bool res = await ref.read(productsProvider.notifier).addProduct(title: enteredTitle, description: enteredDiscription, price: amount, category: _selectedCategory);
 
-                           if(res){
-                             _formKey.currentState!.reset();
-                             ShowSnackbarMsg.showSnack("Added Successfully");
-                             ref.read(tabIndexProvider.notifier).update((cb)=>0);
-                             ref.invalidate(featuresImagesProvider);
-                             ref.invalidate(mainImageProvider);
-                           }
+                            if(res){
+                              _formKey.currentState!.reset();
+                              ShowSnackbarMsg.showSnack("Added Successfully");
+                              ref.read(tabIndexProvider.notifier).update((cb)=>0);
+                              ref.invalidate(featuresImagesProvider);
+                              ref.invalidate(mainImageProvider);
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -168,21 +183,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           ),
                         ),
                         child: Consumer(
-                          builder: (context,ref,child) {
-                            bool isLoading = ref.watch(addProductLoaderProvider);
-                            return  Text(
-                              isLoading?"Adding":"Add Product",
-                              style: const TextStyle(fontSize: 18),
-                            );
-                          }
+                            builder: (context,ref,child) {
+                              bool isLoading = ref.watch(addProductLoaderProvider);
+                              return  Text(
+                                isLoading?"Adding":"Add Product",
+                                style: const TextStyle(fontSize: 18),
+                              );
+                            }
                         ),
                       );
                     }
-                  ),
                 ),
-              ],
-            ),
-          )
+              ),
             ],
           ),
         ),

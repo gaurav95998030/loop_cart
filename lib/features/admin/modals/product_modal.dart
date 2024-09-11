@@ -7,13 +7,31 @@ enum ProductCategory {
   Electronics,
   HomeAppliances,
   Books,
-  BeautyAndPersonalCare,
-  SportsAndOutdoors,
-  ToysAndGames,
+  Beauty,
+  Sports,
+  Toys,
   Groceries,
   Furniture,
-  HealthAndWellness,
+  Health,
 }
+
+
+
+Map<ProductCategory,String> categoryIcons = {
+  ProductCategory.Books:'assets/images/product_category/Books.png',
+  ProductCategory.Beauty:'assets/images/product_category/Beauty.png',
+  ProductCategory.Clothes:'assets/images/product_category/Clothes.png',
+  ProductCategory.Electronics:'assets/images/product_category/Electronics.png',
+  ProductCategory.Furniture:'assets/images/product_category/Furniture.png',
+  ProductCategory.Groceries:'assets/images/product_category/Groceries.png',
+  ProductCategory.Health:'assets/images/product_category/Health.png',
+  ProductCategory.Laptop:'assets/images/product_category/Laptop.png',
+  ProductCategory.Mobile:'assets/images/product_category/Mobile.png',
+  ProductCategory.Sports:'assets/images/product_category/Sports.png',
+  ProductCategory.Toys:'assets/images/product_category/Toys.png',
+  ProductCategory.Tv:'assets/images/product_category/TV.png',
+  ProductCategory.HomeAppliances:'assets/images/product_category/HomeApliances.png'
+};
 
 
 

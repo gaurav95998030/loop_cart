@@ -6,7 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loop_cart/features/admin/view_modal/features_images_provider.dart';
 
 class UploadFeaturedImages extends StatefulWidget {
-  const UploadFeaturedImages({super.key});
+  final String title;
+  const UploadFeaturedImages({required this.title,super.key});
 
   @override
   State<UploadFeaturedImages> createState() => _UploadFeaturedImagesState();
@@ -29,7 +30,7 @@ class _UploadFeaturedImagesState extends State<UploadFeaturedImages> {
                   ? Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    ref.read(featuresImagesProvider.notifier).uploadImage();
+                    ref.read(featuresImagesProvider.notifier).uploadImage(widget.title);
                   },
                   icon: const Icon(Icons.upload, size: 20),
                   label: const Text("Upload Featured Images"),

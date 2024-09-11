@@ -7,7 +7,8 @@ import 'package:loop_cart/features/admin/view_modal/main_image_provider.dart';
 import 'package:loop_cart/utils/show_snackbar.dart';
 
 class UploadMainImage extends StatefulWidget {
-  const UploadMainImage({super.key});
+  final String title;
+  const UploadMainImage({required this.title,super.key});
 
   @override
   State<UploadMainImage> createState() => _UploadMainImageState();
@@ -46,7 +47,7 @@ class _UploadMainImageState extends State<UploadMainImage> {
                   const CircularProgressIndicator(),
                 IconButton(
                   onPressed: () async {
-                   bool res = await ref.read(mainImageProvider.notifier).uploadImage();
+                   bool res = await ref.read(mainImageProvider.notifier).uploadImage(widget.title);
                    if(res){
                      ShowSnackbarMsg.showSnack("Image Uploaded SuccessFully");
                    }else{

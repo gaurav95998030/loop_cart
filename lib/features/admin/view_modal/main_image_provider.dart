@@ -16,7 +16,7 @@ class MainImageNotifier extends StateNotifier<MainImageState> {
 
 
 
-  Future<bool> uploadImage() async {
+  Future<bool> uploadImage( String title) async {
 
 
     final ImagePicker picker = ImagePicker();
@@ -24,7 +24,7 @@ class MainImageNotifier extends StateNotifier<MainImageState> {
 
     state = MainImageState(pickedImage: state.pickedImage, isLoading: true, url: state.url);
     if(image != null){
-      String? res = await StorageServices.uploadImage(File(image.path));
+      String? res = await StorageServices.uploadImage(File(image.path),title);
 
       if(res!=null){
         state = MainImageState(pickedImage: image, isLoading: false, url: res);
