@@ -20,6 +20,8 @@ class ClientHome extends StatefulWidget {
 }
 
 class _ClientHomeState extends State<ClientHome> {
+
+  TextEditingController queryController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(

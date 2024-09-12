@@ -42,7 +42,7 @@ class ProductNotifier extends StateNotifier<List<ProductModal>>{
 
 
     List<String> images = ref.read(featuresImagesProvider).url;
-    ProductModal product = ProductModal(buyCount: 0, price: price, category: category, adminId: FirebaseAuth.instance.currentUser!.uid, description: description, featureImages: images, mainImage: mainImage, productId: productId, productTitle: title, time: DateTime.now());
+    ProductModal product = ProductModal(buyCount: 0, price: price, category: category, adminId: FirebaseAuth.instance.currentUser!.uid, description: description, featureImages: images, mainImage: mainImage, productId: productId, productTitle: title, time: DateTime.now(), isAvailable: true,rating: 4);
     bool res = await AdminService.addProduct(product);
     if(res){
       state = [product,...state];

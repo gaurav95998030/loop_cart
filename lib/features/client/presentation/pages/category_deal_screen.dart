@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loop_cart/features/admin/modals/product_modal.dart';
+import 'package:loop_cart/features/client/presentation/pages/product_detail.dart';
 import 'package:loop_cart/features/client/view_modal/category_products_provider.dart';
 import 'package:loop_cart/utils/vertical_space.dart';
 
@@ -77,50 +79,65 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
                           itemBuilder: (context, index) {
                             final product = items[index];
 
-                            return Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 4.0,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: CachedNetworkImage(
-                                      imageUrl: product.mainImage,
-                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                            return GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (Ctx)=>ProductDetail(product: product)));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 4.0,
+                                      offset: Offset(0, 2),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    product.productTitle,
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: CachedNetworkImage(
+                                        imageUrl: product.mainImage,
+                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                            Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      ),
                                     ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 4.0),
-                                  Text(
-                                    'Rs. ${product.price.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.w600,
+                                    const SizedBox(height: 8.0),
+                                    RatingBarIndicator(
+                                      rating: product.rating,
+                                      itemBuilder: (context, index) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      itemCount: 5,
+                                      itemSize: 20,
+                                      direction: Axis.horizontal,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      product.productTitle,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4.0),
+                                    Text(
+                                      'Rs. ${product.price.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },

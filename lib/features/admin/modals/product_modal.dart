@@ -47,11 +47,15 @@ class ProductModal {
   String description;
   String productTitle;
   int buyCount;
+  bool isAvailable;
+  double rating;
 
-  ProductModal({required this.buyCount,required this.price,required this.category,required this.adminId,required this.description,required this.featureImages,required this.mainImage,required this.productId,required this.productTitle,required this.time});
+  ProductModal({required this.isAvailable,required this.rating,required this.buyCount,required this.price,required this.category,required this.adminId,required this.description,required this.featureImages,required this.mainImage,required this.productId,required this.productTitle,required this.time});
 
   Map<String, dynamic> toJson() {
     return {
+      'rating':rating,
+      'isAvailable':isAvailable,
       'buyCount':buyCount,
       'productId': productId,
       'adminId': adminId,
@@ -68,6 +72,8 @@ class ProductModal {
   // Create ProductModal from JSON
   factory ProductModal.fromJson(Map<String, dynamic> json) {
     return ProductModal(
+      rating: json['rating'].toDouble(),
+      isAvailable:json['isAvailable'],
       buyCount: json['buyCount'],
       productId: json['productId'],
       adminId: json['adminId'],
