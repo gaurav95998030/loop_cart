@@ -31,7 +31,7 @@ class _ProductDetailState extends State<ProductDetail> {
         backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -48,7 +48,7 @@ class _ProductDetailState extends State<ProductDetail> {
               height: 300,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 6,
@@ -120,20 +120,20 @@ class _ProductDetailState extends State<ProductDetail> {
                 ],
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
 
             // Price
             Text(
               "Amount: \$${widget.product.price.toStringAsFixed(2)}",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.green),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Rating
             Row(
               children: [
-                Text("Rating:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                SizedBox(width: 8),
+                const Text("Rating:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                const SizedBox(width: 8),
                 RatingBarIndicator(
                   rating: widget.product.rating,
                   itemBuilder: (context, index) => const Icon(
