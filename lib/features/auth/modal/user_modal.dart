@@ -9,6 +9,7 @@ class UserModal {
   String? dob;
   String role;
 
+
   UserModal({
     required this.userName,
     required this.email,

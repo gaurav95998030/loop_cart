@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:loop_cart/features/client/presentation/widgets/account/user_account.dart';
 import 'package:loop_cart/features/client/presentation/widgets/home/client_home.dart';
+
+import '../../cart/modal/cart_modal.dart';
+import '../../cart/presentation/screen/show_carts.dart';
+import '../../cart/view_modal/cart_provider.dart';
 class ClientHomePage extends StatefulWidget {
   const ClientHomePage({super.key});
 
@@ -17,16 +23,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
     // Improved account page content
    const UserAccount(),
     // Improved cart page content
-    const Center(
-      child: Text(
-        "Your Cart",
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.teal,
-        ),
-      ),
-    ),
+    const ShowCarts()
   ];
 
   void setPage(int value) {
@@ -57,12 +54,23 @@ class _ClientHomePageState extends State<ClientHomePage> {
                 // Action for notifications
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // Action for notifications
-              },
+            // IconButton(
+            //   icon: const Icon(Icons.search),
+            //   onPressed: () {
+            //     // Action for notifications
+            //   },
+            // ),
+            Consumer(
+                builder: (context,ref,child) {
+                  List<CartModal>  carts = ref.watch(cartProvider);
+                  return badges.Badge(
+                    badgeContent: Text(carts.length.toString()),
+                    child: Icon(Icons.shopping_cart),
+                  );
+                }
             ),
+            const SizedBox(width: 20,)
+
           ],
         ),
       ),
@@ -74,7 +82,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
         onTap: (value) {
           setPage(value);
         },
-        items: const [
+        items:  [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
@@ -83,10 +91,16 @@ class _ClientHomePageState extends State<ClientHomePage> {
             icon: Icon(Icons.account_circle),
             label: "Account",
           ),
+
           BottomNavigationBarItem(
-            icon: badges.Badge(
-              badgeContent: Text('3'),
-              child: Icon(Icons.shopping_cart),
+            icon: Consumer(
+              builder: (context,ref,child) {
+                List<CartModal>  carts = ref.watch(cartProvider);
+                return badges.Badge(
+                  badgeContent: Text(carts.length.toString()),
+                  child: Icon(Icons.shopping_cart),
+                );
+              }
             ),
             label: "Cart",
           ),

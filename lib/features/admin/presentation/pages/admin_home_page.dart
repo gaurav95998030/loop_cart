@@ -1,8 +1,13 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loop_cart/features/admin/modals/transactions_modal.dart';
 import 'package:loop_cart/features/admin/presentation/pages/add_product_screen.dart';
 import 'package:loop_cart/features/admin/presentation/widgets/admin_home/show_posts.dart';
+import 'package:loop_cart/features/admin/presentation/widgets/analytics/show_analytics.dart';
+import 'package:loop_cart/features/admin/presentation/widgets/orders/show_orders.dart';
 import 'package:loop_cart/features/admin/view_modal/tab_index_provider.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -17,13 +22,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
 
   List<Widget> contents = [
-    ShowPosts(),
-    Center(
-      child: Text("Admin analytics"),
-    ),
-    Center(
-      child: Text("Orders"),
-    ),
+    const ShowPosts(),
+   ShowAnalytics(),
+    ShowOrders(),
   ];
   @override
   Widget build(BuildContext context) {

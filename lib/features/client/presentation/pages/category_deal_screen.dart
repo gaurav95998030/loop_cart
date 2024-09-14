@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loop_cart/features/admin/modals/product_modal.dart';
+
 import 'package:loop_cart/features/client/presentation/pages/product_detail.dart';
 import 'package:loop_cart/features/client/view_modal/category_products_provider.dart';
 import 'package:loop_cart/utils/vertical_space.dart';
+import 'package:badges/badges.dart' as badges;
+
+import '../../cart/modal/cart_modal.dart';
+import '../../cart/presentation/screen/show_carts.dart';
+import '../../cart/view_modal/cart_provider.dart';
 
 class CategoryDealScreen extends StatefulWidget {
   final String category;
@@ -43,6 +49,20 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
                 // Action for search
               },
             ),
+            Consumer(
+                builder: (context,ref,child) {
+                  List<CartModal>  carts = ref.watch(cartProvider);
+                  return badges.Badge(
+                    onTap: (){
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>ShowCarts()));
+                    },
+                    badgeContent: Text(carts.length.toString()),
+                    child: const Icon(Icons.shopping_cart),
+                  );
+                }
+            ),
+            const SizedBox(width: 20,),
+
           ],
         ),
       ),

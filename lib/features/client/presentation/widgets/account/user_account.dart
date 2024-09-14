@@ -16,18 +16,18 @@ class UserAccount extends StatefulWidget {
 class _UserAccountState extends State<UserAccount> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
       child: Column(
         children: [
           GreetClient(),
-          UserOptions(),
+          // UserOptions(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Your Orders",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
 
-              TextButton(onPressed: (){}, child: Text("See all"))
+
             ],
           ),
           ShowOrders()
