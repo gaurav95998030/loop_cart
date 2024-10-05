@@ -19,9 +19,20 @@ class _CarouselOptionsState extends State<CarouselOptions> {
     super.dispose();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    String  base = "assets/images/crousel";
+
+    List<String> crouselImages = [
+      "$base/c1.jpg",
+      "$base/c2.jpg",
+      "$base/c3.jpg",
+      "$base/c4.jpg",
+    ];
+    return SizedBox(
       width: double.infinity,
       height: 300,
       child: Column(
@@ -30,11 +41,12 @@ class _CarouselOptionsState extends State<CarouselOptions> {
             child: PageView.builder(
               controller: controller,
               scrollDirection: Axis.horizontal,
-              itemCount: 4, // Simplified the itemCount
+              itemCount: crouselImages.length, // Simplified the itemCount
               itemBuilder: (context, index) {
                 return Container(
-                  color: Colors.red,
+                  color: Colors.grey.shade300,
                   margin: const EdgeInsets.all(8),
+                  child: Image.asset( crouselImages[index],fit: BoxFit.cover,),
                 );
               },
             ),

@@ -6,6 +6,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loop_cart/features/auth/presentation/pages/login_page.dart';
 
 class GreetClient extends StatelessWidget {
   const GreetClient({super.key});
@@ -52,6 +53,13 @@ class GreetClient extends StatelessWidget {
                   ],
                 ),
               ),
+              const Spacer(),
+              TextButton(onPressed: () async{
+               await FirebaseAuth.instance.signOut();
+
+               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>LoginPage()));
+
+              }, child: const Text("Log out"))
             ],
           ),
         ),

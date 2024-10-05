@@ -8,7 +8,9 @@ import 'package:loop_cart/features/admin/modals/product_modal.dart';
 
 import 'package:loop_cart/features/client/presentation/widgets/client_button.dart';
 import 'package:loop_cart/features/client/services/client_services.dart';
+import 'package:loop_cart/utils/show_snackbar.dart';
 import 'package:loop_cart/utils/vertical_space.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:uuid/uuid.dart';
 
@@ -55,7 +57,11 @@ class _ProductDetailState extends State<ProductDetail> {
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                    child:  Lottie.asset(
+                      'assets/animation/app_loader.json',
+                    )
+                );
               }
 
               if (snapshot.hasError) {
@@ -77,7 +83,7 @@ class _ProductDetailState extends State<ProductDetail> {
 // Product Title
                   Text(
                     product.productTitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87),
@@ -216,7 +222,11 @@ class _ProductDetailState extends State<ProductDetail> {
                         fontSize: 16, color: Colors.black54, height: 1.5),
                   ),
 
-                  ClientButton(label: "Buy Now", onClick: () {}),
+                  const VerticalSpace(height: 10),
+
+                  ClientButton(label: "Buy Now", onClick: () {
+                    ShowSnackbarMsg.showSnack("Please Add This product to cart first ");
+                  }),
                   const VerticalSpace(height: 10),
                   Center(
                     child: SizedBox(

@@ -34,7 +34,7 @@ class _ClientHomeState extends State<ClientHome> {
       padding: const EdgeInsets.all(8.0),
       child:  ListView(
 
-        children: [
+        children: const [
           VerticalSpace(height: 10),
           SearchBarHome(),
           TopCategories(),

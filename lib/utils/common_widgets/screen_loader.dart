@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class ScreenLoader extends StatefulWidget {
   const ScreenLoader({super.key});
@@ -13,9 +14,11 @@ class ScreenLoader extends StatefulWidget {
 class _ScreenLoaderState extends State<ScreenLoader> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child:  Lottie.asset(
+        'assets/animation/app_loader.json',
+        )
       ),
     );
   }

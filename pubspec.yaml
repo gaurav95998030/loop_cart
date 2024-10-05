@@ -52,6 +52,20 @@ dependencies:
   pay: ^2.0.0
   intl: ^0.19.0
   fl_chart: ^0.69.0
+  video_player: ^2.9.2
+  lottie: ^3.1.2
+  google_fonts: ^6.2.1
+  flutter_launcher_icons: ^0.14.1
+
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/loop_cart_logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/loop_cart_logo.png"
+  min_sdk_android: 21
 
 dev_dependencies:
   flutter_test:
@@ -77,8 +91,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+     - assets/create_page_shop.jpg
      - assets/images/
+     - assets/animation/
+     - assets/images/crousel/
      - assets/images/product_category/
+     - assets/videos/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

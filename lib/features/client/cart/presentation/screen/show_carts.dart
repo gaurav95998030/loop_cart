@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loop_cart/utils/show_snackbar.dart';
 
 
 import '../../../address/screens/address_screen.dart';
@@ -93,6 +94,10 @@ class _ShowCartsState extends State<ShowCarts> {
                      ],
                    ),
                    ElevatedButton(onPressed: (){
+                     if(carts.isEmpty){
+                       ShowSnackbarMsg.showSnack("Please add items to cart first");
+                       return;
+                     }
                      Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddressScreen(carts: carts,)));
                    }, child: Text("Check Out All (${carts.length})"))
                  ],

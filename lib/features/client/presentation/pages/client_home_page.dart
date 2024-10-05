@@ -19,7 +19,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   int currentPage = 0;
   final List<Widget> contents = [
     // Improved home page content
-   ClientHome(),
+   const ClientHome(),
     // Improved account page content
    const UserAccount(),
     // Improved cart page content
@@ -36,7 +36,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70),
+        preferredSize: const Size.fromHeight(70),
         child: AppBar(
           title: SizedBox(
             width: 120, // Set desired width
@@ -63,9 +63,14 @@ class _ClientHomePageState extends State<ClientHomePage> {
             Consumer(
                 builder: (context,ref,child) {
                   List<CartModal>  carts = ref.watch(cartProvider);
-                  return badges.Badge(
-                    badgeContent: Text(carts.length.toString()),
-                    child: Icon(Icons.shopping_cart),
+                  return GestureDetector(
+                    onTap: (){
+                      setPage(2);
+                    },
+                    child: badges.Badge(
+                      badgeContent: Text(carts.length.toString()),
+                      child: const Icon(Icons.shopping_cart),
+                    ),
                   );
                 }
             ),
@@ -83,7 +88,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
           setPage(value);
         },
         items:  [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
           ),

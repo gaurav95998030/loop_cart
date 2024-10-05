@@ -8,6 +8,7 @@ import 'package:loop_cart/features/client/presentation/pages/product_detail.dart
 import 'package:loop_cart/features/client/view_modal/category_products_provider.dart';
 import 'package:loop_cart/utils/vertical_space.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:lottie/lottie.dart';
 
 import '../../cart/modal/cart_modal.dart';
 import '../../cart/presentation/screen/show_carts.dart';
@@ -54,7 +55,7 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
                   List<CartModal>  carts = ref.watch(cartProvider);
                   return badges.Badge(
                     onTap: (){
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>ShowCarts()));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>const ShowCarts()));
                     },
                     badgeContent: Text(carts.length.toString()),
                     child: const Icon(Icons.shopping_cart),
@@ -82,7 +83,7 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
 
                 return items.when(
                   data: (items) {
-                    return Expanded(
+                    return items.isEmpty?Center(child: Lottie.asset("assets/animation/empty.json"),): Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async {
                           // Refresh the provider to reload data
@@ -165,8 +166,12 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
                       ),
                     );
                   },
-                  error: (err, stack) => Center(child: Text("No Items Found")),
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (err, stack) => const Center(child: Text("No Items Found")),
+                  loading: () => Center(
+                      child:  Lottie.asset(
+                        'assets/animation/app_loader.json',
+                      )
+                  ),
                 );
               },
             ),
